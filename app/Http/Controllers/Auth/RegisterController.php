@@ -23,7 +23,7 @@ class RegisterController extends Controller
         
             $user = User::create($validatedData);
             auth()->login($user);
-            return redirect('/dashboard')->with('success', "Account successfully registered.");
+            return redirect()->route('user.home')->with('success', "Account successfully registered.");
     }
        
 }

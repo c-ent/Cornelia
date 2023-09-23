@@ -16,11 +16,15 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->tinyInteger('type')->default(0); //!added this
-            /* Users: 0=>User, 1=>Admin, 2=>Manager */
             $table->string('password');
+            $table->unsignedBigInteger('role_id')->default(3); // Foreign key reference to roles table
             $table->rememberToken();
             $table->timestamps();
+        });
+
+        // Add foreign key constraint
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreign('role_id')->references('id')->on('roles');
         });
     }
 

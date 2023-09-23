@@ -18,14 +18,21 @@ class CheckRole
      //!Added this function
     public function handle(Request $request, Closure $next,$userType): Response
     {
-
-        if(auth()->user()->type == $userType){
-            return $next($request);
+        if (!auth()->check() || auth()->user()->role->name !== $userType) {
+            abort(403, 'Unauthorized');
         }
+        return $next($request);
+
+        // if(auth()->user()->type == $userType){
+        //     return $next($request);
+        // }
           
-        return response()->json(['You do not have permission to access for this page.']);
-        /* return response()->view('errors.check-permission'); */
+        // return response()->json(['You do not have permission to access for this page.']);
+        // /* return response()->view('errors.check-permission'); */
     }
+
+
+    
 
 
     

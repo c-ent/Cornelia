@@ -1,90 +1,80 @@
 <?php
-
-
 namespace App\Http\Controllers\Superadmin;
-use Illuminate\View\View;
-use Illuminate\Validation\ValidationException; //for valdiation? //!
+use Illuminate\Validation\ValidationException; 
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
 
-
-
-
 class SuperAdminDashboardController extends Controller
 {
-
     public function index(){
-        $admin = User::where('role_id', 2)->get();
-        return view('superadmin.dashboard')->with('admins', $admin);
+        $admins = User::where('role_id', 2)->get();
+        $users = User::where('role_id', 3)->get();
+        return view('superadmin.dashboard', compact('admins', 'users'));
     }
-
-    //Admin details
+    //View
     public function details(User $id){
         return view('superadmin.adminview')->with('admin', $id);
     }
 
-
-    
-    //To Create and Store the Todo
+    //Create and Store
     public function create(){
-        return view('create');
+        return view('superadmin.admincreate');
     }
 
     public function store(){
         try {
             $this->validate(request(), [
                 'name' => ['required'],
-                'description' => ['required']
+                'email' => ['required'],
+                'password' => ['required'],
+
             ]);
         } catch (ValidationException $e) {
         }
 
         $data = request()->all();
 
-        $todo = new Todo();
-        //On the left is the field name in DB and on the right is field name in Form/view
-        $todo->name = $data['name'];
-        $todo->description = $data['description'];
-        $todo->save();
+        $user = new User();
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+        $user->password = $data['password'];
+        $user->role_id = 2;
+        $user->save();
 
-        session()->flash('success', 'Todo created succesfully');
+        session()->flash('success', 'User created succesfully');
 
-        return redirect('/');
+        return redirect('/superadmin');
     }
 
-
-    
-    //To show the Edit form with corresponding todo name and descript
-    public function edit(Todo $todo){
-        return view('edit')->with('todos', $todo);;
+    public function edit(User $id){
+        return view('superadmin.adminedit')->with('admin', $id);;
     
     }
-    public function update(Todo $todo){ //To editupdate the data in the database
+
+    public function update(User $id){ 
         try {
             $this->validate(request(), [
                 'name' => ['required'],
-                'description' => ['required'],
-           
+                'email' => ['required'],
             ]);
         } catch (ValidationException $e) {
         }
 
         $data = request()->all();
 
-        $todo->name = $data['name'];
-        $todo->description = $data['description'];
-        $todo->save();
+        $id->name = $data['name'];
+        $id->email = $data['email'];
+        $id->save();
 
-        session()->flash('success', 'Todo updated successfully');
-
-        return redirect('/');
+        session()->flash('success', 'Admin updated successfully');
+        return redirect('/superadmin');
 
     }
 
-    //Deletee Todo item
-    public function delete(Todo $todo){
-        $todo->delete();
-        return redirect('/');
+    //Deletee Admin
+    public function delete(User $id){
+        $id->delete();
+        return redirect('/superadmin');
     }
 };

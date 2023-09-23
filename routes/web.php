@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Middleware\CheckRole;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SuperAdmin\SuperAdminDashboardController;
+use App\Http\Controllers\Management\UserManagementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,13 +42,19 @@ Route::middleware(['auth'])->group(function () {
 
 //superadmin
 Route::middleware(['auth', 'CheckRole:superadmin'])->group(function () {
+    //HOME
     Route::get('/superadmin', [SuperAdminDashboardController::class, 'index'])->name('superadmin.home');
-    Route::get('/superadmin/edit/admin/{id}', [SuperAdminDashboardController::class, 'index'])->name('admin.edit');
-    
-    Route::get('/superadmin/view/admin/{id}', [SuperAdminDashboardController::class, 'details'])->name('admin.details');
-    Route::get('/superadmin/delete/admin/{id}', [SuperAdminDashboardController::class, 'index'])->name('admin.delete');
+    //VIEW DETAILS
+    Route::get('/view/admin/{id}', [SuperAdminDashboardController::class, 'details'])->name('admin.details');
+    //CREATE
+    Route::get('/create/admin/', [SuperAdminDashboardController::class, 'create'])->name('admin.create');
+    Route::post('/store/admin/', [SuperAdminDashboardController::class, 'store'])->name('admin.store');
+    //EDIT AND UPDATE
+    Route::get('/edit/admin/{id}', [SuperAdminDashboardController::class, 'edit'])->name('admin.edit');
+    Route::post('/update/admin/{id}', [SuperAdminDashboardController::class, 'update'])->name('admin.update');
+    //DELETE
+    Route::delete('/delete/admin/{id}', [SuperAdminDashboardController::class, 'delete'])->name('admin.delete');
 }); 
-//try
 
 //admin
 Route::middleware(['auth', 'CheckRole:admin'])->group(function () {
@@ -58,3 +65,19 @@ Route::middleware(['auth', 'CheckRole:admin'])->group(function () {
 Route::middleware(['auth', 'CheckRole:user'])->group(function () {
     Route::get('/user', [HomeController::class, 'userHome'])->name('user.home');
 });
+
+
+//superadmin
+Route::middleware(['auth', 'CheckRole:superadmin,admin'])->group(function () {
+    //HOME
+    //VIEW DETAILS
+    Route::get('/view/user/{id}', [UserManagementController::class, 'details'])->name('user.details');
+    //CREATE
+    Route::get('/create/user/', [UserManagementController::class, 'create'])->name('user.create');
+    Route::post('/store/user/', [UserManagementController::class, 'store'])->name('user.store');
+    //EDIT AND UPDATE
+    Route::get('/edit/user/{id}', [UserManagementController::class, 'edit'])->name('user.edit');
+    Route::post('/update/user/{id}', [UserManagementController::class, 'update'])->name('user.update');
+    //DELETE
+    Route::delete('/delete/user/{id}', [UserManagementController::class, 'delete'])->name('user.delete');
+}); 

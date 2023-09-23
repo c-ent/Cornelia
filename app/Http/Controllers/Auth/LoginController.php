@@ -22,27 +22,22 @@ class LoginController extends Controller
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
-        ]);
- 
-        // if (Auth::attempt($credentials)) { 
-        //     // Authentication successful
-        //     $request->session()->regenerate();
-        //     return redirect()->intended('dashboard');
-        // }
-
+        ] );
+        
         if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
             $user = auth()->user();
             
-            switch ($user->type) {
+            switch ($user->role->name) {
+                case 'superadmin':
+                    return redirect()->route('superadmin.home');
                 case 'admin':
-                    dd('yourea dmin');
-                    // return redirect()->route('admin.home');
+                    return redirect()->route('admin.home');
                 case 'user':
-                    dd('yourea user');
-                    // return redirect()->route('manager.home');
+                    return redirect()->route('user.home');
                 default:
-                    return redirect()->route('home');
-                }
+                    return redirect()->route('user.home'); // Default fallback route
+            }
         }
 
         $errorField = User::where('email', $credentials['email'])->exists() ? 'password' : 'email';

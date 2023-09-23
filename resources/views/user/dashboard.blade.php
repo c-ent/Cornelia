@@ -1,6 +1,10 @@
 
-
-<h1>WELCOMEEE</h1>
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+dasboard for userrrrr
 
 @auth
 {{auth()->user()->email}}

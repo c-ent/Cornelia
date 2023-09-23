@@ -14,7 +14,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware(['auth']);
     }
 //!added below all
     /**
@@ -24,7 +24,16 @@ class HomeController extends Controller
      */
     public function index(): View
     {
-        return view('home');
+
+        if (auth()->check()) {
+            $user = auth()->user();
+            $role = $user->role->name;
+            return view('welcome')->with('role', $role);
+        } else {
+            // Handle the case when the user is not authenticated
+            return view('welcome'); // You can return a different view or message for unauthenticated users
+        }
+
     } 
 
      /**
@@ -32,9 +41,15 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+
+     public function superadminHome(): View
+     {
+         return view('superadmin.dashboard');
+     }
+
     public function adminHome(): View
     {
-        return view('adminHome');
+        return view('admin.dashboard');
     }
   
     /**
@@ -42,9 +57,9 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function managerHome(): View
+    public function userHome(): View
     {
-        return view('managerHome');
+        return view('user.dashboard');
     }
 
 

@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Casts\Attribute; //!added
 
 class User extends Authenticatable
 {
@@ -45,10 +44,15 @@ class User extends Authenticatable
     ];
 
     //!added this
-    protected function type(): Attribute
+    public function role()
     {
-        return new Attribute(
-            get: fn ($value) =>  ["user", "admin"][$value],
-        );
+        return $this->belongsTo(Role::class);
     }
+    
+    // protected function type(): Attribute
+    // {
+    //     return new Attribute(
+    //         get: fn ($value) =>  ["user", "admin"][$value],
+    //     );
+    // }
 }

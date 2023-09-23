@@ -1,6 +1,4 @@
-
-
-<h1>WELCOMEEE</h1>
+dashboard for adminnn
 
 @auth
 {{auth()->user()->email}}

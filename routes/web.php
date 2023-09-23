@@ -47,6 +47,7 @@ Route::middleware(['auth', 'CheckRole:superadmin'])->group(function () {
     Route::get('/superadmin/view/admin/{id}', [SuperAdminDashboardController::class, 'details'])->name('admin.details');
     Route::get('/superadmin/delete/admin/{id}', [SuperAdminDashboardController::class, 'index'])->name('admin.delete');
 }); 
+//try
 
 //admin
 Route::middleware(['auth', 'CheckRole:admin'])->group(function () {

@@ -1,20 +1,20 @@
 <?php
-namespace App\Http\Controllers\Superadmin;
+namespace App\Http\Controllers\Management;
 use Illuminate\Validation\ValidationException; 
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
 
-class SuperAdminDashboardController extends Controller
+class UserManagementController extends Controller
 {
     public function index(){
-        $admins = User::where('role_id', 2)->get();
-        $users = User::where('role_id', 3)->get();
-        return view('superadmin.dashboard', compact('admins', 'users'));
+        $user = User::where('role_id', 3)->get();
+        return view('management.usermanagement.manageusers')->with('users', $user);
     }
+
     //View
     public function details(User $id){
-        return view('superadmin.adminview')->with('admin', $id);
+        return view('superadmin.adminview')->with('user', $id);
     }
 
     //Create and Store

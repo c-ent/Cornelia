@@ -2,9 +2,9 @@
 
 <div class="container">
   <h1>Super Admin Dashboard</h1>
-
-  @include('management.adminmanagement.manageadmins') 
-  @include('management.usermanagement.manageusers') 
+<a href="/manage/users">Manage user</a>
+  {{-- @include('management.adminmanagement.manageadmins') 
+  @include('management.usermanagement.manageusers')  --}}
 
 </div>
 

@@ -78,4 +78,12 @@ Route::middleware(['auth', 'CheckRole:admin,superadmin'])->group(function () {
 });
 
 
+// Borrowing and Returning Books
+Route::middleware(['auth', 'CheckRole:superadmin,admin,user'])->group(function () {
+    Route::get('/borrow/book/{id}', [BooksController::class, 'borrow'])->name('book.borrow'); // Borrow
+    Route::post('/return/book/{id}', [BooksController::class, 'return'])->name('book.return'); // Return
+});
+
+
+
 

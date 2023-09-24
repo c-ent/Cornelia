@@ -66,4 +66,16 @@ Route::middleware(['auth', 'CheckRole:admin,superadmin'])->group(function () {
 });
 
 
+//MANAGE Books
+Route::middleware(['auth', 'CheckRole:admin,superadmin'])->group(function () {
+    Route::get('/manage/books', [BooksController::class, 'users'])->name('book.manage'); //ManageBooksDashboard
+    Route::get('/view/book/{id}', [BooksController::class, 'details'])->name('book.details'); //View
+    Route::get('/create/book/', [BooksController::class, 'create'])->name('book.create'); //Create
+    Route::post('/store/book/', [BooksController::class, 'store'])->name('book.store');//StoreCreatedBook
+    Route::get('/edit/book/{id}', [BooksController::class, 'edit'])->name('book.edit'); //Edit
+    Route::post('/update/book/{id}', [BooksController::class, 'update'])->name('book.update');//UpdateEditedBook
+    Route::delete('/delete/book/{id}', [BooksController::class, 'delete'])->name('book.delete');//Delete
+});
+
+
 

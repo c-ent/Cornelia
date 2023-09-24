@@ -1,80 +1,92 @@
 <?php
+
 namespace App\Http\Controllers\Management;
-use Illuminate\Validation\ValidationException; 
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\UserAccessRequest;
 
 class UserManagementController extends Controller
 {
-    public function index(){
-        $user = User::where('role_id', 3)->get();
-        return view('management.usermanagement.manageusers')->with('users', $user);
+    public function index()
+    {
+       
     }
 
-    //View
-    public function details(User $id){
-        return view('superadmin.adminview')->with('user', $id);
-    }
+    public function users()
+    {
+        $currentUser = Auth::user();
+        $roleIdsToShow = [];
 
-    //Create and Store
-    public function create(){
-        return view('superadmin.admincreate');
-    }
-
-    public function store(){
-        try {
-            $this->validate(request(), [
-                'name' => ['required'],
-                'email' => ['required'],
-                'password' => ['required'],
-
-            ]);
-        } catch (ValidationException $e) {
+        if ($currentUser->role_id === 1) {
+            $roleIdsToShow = [1, 2, 3];
+        } elseif ($currentUser->role_id === 2) {
+            $roleIdsToShow = [3];
         }
 
-        $data = request()->all();
-
-        $user = new User();
-        $user->name = $data['name'];
-        $user->email = $data['email'];
-        $user->password = $data['password'];
-        $user->role_id = 2;
-        $user->save();
-
-        session()->flash('success', 'User created succesfully');
-
-        return redirect('/superadmin');
+        $users = User::whereIn('role_id', $roleIdsToShow)->get();
+        
+        return view('Management.Usermanagement.users', compact('users'));
     }
 
-    public function edit(User $id){
-        return view('superadmin.adminedit')->with('admin', $id);;
-    
+    public function details(User $id)
+    {
+        $this->authorize('checkAccess', $id);
+        return view('Management.Usermanagement.viewuser', ['user' => $id]);
     }
 
-    public function update(User $id){ 
-        try {
-            $this->validate(request(), [
-                'name' => ['required'],
-                'email' => ['required'],
-            ]);
-        } catch (ValidationException $e) {
-        }
-
-        $data = request()->all();
-
-        $id->name = $data['name'];
-        $id->email = $data['email'];
-        $id->save();
-
-        session()->flash('success', 'Admin updated successfully');
-        return redirect('/superadmin');
-
+    public function create()
+    {
+        return view('Management.Usermanagement.createuser');
     }
 
-    //Deletee Admin
-    public function delete(User $id){
+    public function store(Request $request)
+    {
+        $credentials = $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+
+        User::create([
+            'name' => $credentials['name'],
+            'email' => $credentials['email'],
+            'password' => $credentials['password'],
+            'role_id' => 3,
+        ]);
+
+        session()->flash('success', 'User created successfully');
+        return redirect('/manage/users');
+    }
+
+    public function edit(User $id)
+    {
+        $this->authorize('checkAccess', $id);
+        return view('Management.Usermanagement.edituser', ['user' => $id]);
+    }
+
+    public function update(Request $request, User $id)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+        ]);
+
+        $id->update([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+        ]);
+
+        session()->flash('success', 'User updated successfully');
+        return redirect('/manage/users');
+    }
+
+    public function delete(User $id)
+    {
+        $this->authorize('checkAccess', $id);
         $id->delete();
-        return redirect('/superadmin');
+        return redirect('/manage/users');
     }
-};
+}

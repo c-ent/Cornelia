@@ -4,6 +4,7 @@
         <tr>
             <th>Name</th>
             <th>Email</th>
+            <th>Role</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -12,6 +13,19 @@
         <tr>
             <td>{{ $user->name }}</td>
             <td>{{ $user->email }}</td>
+            <td>
+                @switch($user->role_id)
+                    @case(2)
+                            Admin
+                            @break
+                    @case(3)
+                            User
+                            @break
+                    @default
+                        
+                @endswitch
+            </td>
+
             <td>
                 <a href="{{ route('user.details', $user->id) }}" class="btn btn-primary">View</a>
                 <a href="{{ route('user.edit', $user->id) }}" class="btn btn-primary">Edit</a>

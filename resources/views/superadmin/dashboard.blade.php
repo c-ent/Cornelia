@@ -3,6 +3,8 @@
 <div class="container">
   <h1>Super Admin Dashboard</h1>
 <a href="/manage/users">Manage user</a>
+<a href="/manage/books">Manage Books</a>
+<a href="/manage/bbh">Manage Borrowed Books</a>
   {{-- @include('management.adminmanagement.manageadmins') 
   @include('management.usermanagement.manageusers')  --}}
 

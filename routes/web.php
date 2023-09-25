@@ -8,6 +8,8 @@ use App\Http\Middleware\CheckRole;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SuperAdmin\SuperAdminDashboardController;
 use App\Http\Controllers\Management\UserManagementController;
+use App\Http\Controllers\Management\BooksController;
+use App\Http\Controllers\Management\BorrowHistoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,13 +70,24 @@ Route::middleware(['auth', 'CheckRole:admin,superadmin'])->group(function () {
 
 //MANAGE Books
 Route::middleware(['auth', 'CheckRole:admin,superadmin'])->group(function () {
-    Route::get('/manage/books', [BooksController::class, 'users'])->name('book.manage'); //ManageBooksDashboard
+    Route::get('/manage/books', [BooksController::class, 'books'])->name('book.manage'); //ManageBooksDashboard
     Route::get('/view/book/{id}', [BooksController::class, 'details'])->name('book.details'); //View
     Route::get('/create/book/', [BooksController::class, 'create'])->name('book.create'); //Create
     Route::post('/store/book/', [BooksController::class, 'store'])->name('book.store');//StoreCreatedBook
     Route::get('/edit/book/{id}', [BooksController::class, 'edit'])->name('book.edit'); //Edit
     Route::post('/update/book/{id}', [BooksController::class, 'update'])->name('book.update');//UpdateEditedBook
     Route::delete('/delete/book/{id}', [BooksController::class, 'delete'])->name('book.delete');//Delete
+});
+
+//MANAGE Books BorrowHistory
+Route::middleware(['auth', 'CheckRole:admin,superadmin'])->group(function () {
+    Route::get('/manage/bbh', [BorrowHistoryController::class, 'borrowhistory'])->name('bbh.manage'); //ManageBooksDashboard
+    Route::get('/view/bbh/{id}', [BorrowHistoryController::class, 'details'])->name('bbh.details'); //View
+    Route::get('/create/bbh/', [BorrowHistoryController::class, 'create'])->name('bbh.create'); //Create
+    Route::post('/store/bbh/', [BorrowHistoryController::class, 'store'])->name('bbh.store');//StoreCreatedBook
+    Route::get('/edit/bbh/{id}', [BorrowHistoryController::class, 'edit'])->name('bbh.edit'); //Edit
+    Route::post('/update/bbh/{id}', [BorrowHistoryController::class, 'update'])->name('bbh.update');//UpdateEditedBook
+    Route::delete('/delete/bbh/{id}', [BorrowHistoryController::class, 'delete'])->name('bbh.delete');//Delete
 });
 
 

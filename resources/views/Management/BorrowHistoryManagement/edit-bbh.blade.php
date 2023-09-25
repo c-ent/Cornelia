@@ -1,25 +1,29 @@
 
-<form action=" {{route('book.update', $book->id)}}" method="post">
+<form action=" {{route('bbh.update', $bbh->id)}}" method="post">
     @csrf
     <div>
-        <label for="name"> Book Title</label>
-        <input type="text" name="title"  value="{{$book->title}}">
+        <label for=""> Name of borrower</label>
+        <input type="number" name="borrower"  value="{{$bbh->user_id}}">
     </div>
     <div>
-        <label for="author">Book Author</label>
-        <input type="text" name="author" value="{{$book->author}}">
+        <label for="">Book Borrowed</label>
+        <input type="number" name="bookborrowed" value="{{$bbh->book_id}}">
     </div>
     <div>
-        <label for="description">Description</label>
-        <input type="text" name="description"  value="{{$book->description}}">
+        <label for="">Date Borrowed</label>
+        <input type="datetime-local" name="dateborrowed" value="{{$bbh->borrow_date}}">
+    </div>
+    
+    <div>
+        <label for="">Date Returned</label>
+        <input type="datetime-local" name="datereturned"  value="{{$bbh->return_date}}">
     </div>
     <div>
-        <label for="isbn">ISBN</label>
-        <input type="number" name="isbn"  value="{{$book->isbn}}">
-    </div>
-    <div>
-        <label for="copies">Number of copies</label>
-        <input type="number" name="copies"  value="{{$book->copies}}">
+        <label for="">Borrow Status</label>
+        <select name="borrowstatus">
+            <option value="borrowed" {{ $bbh->borrow_status === 'Borrowed' ? 'selected' : '' }}>Borrowed</option>
+            <option value="returned" {{ $bbh->borrow_status === 'Returned' ? 'selected' : '' }}>Returned</option>
+        </select>
     </div>
 
     <div></div>
@@ -28,33 +32,33 @@
 </form>
 
 
-@if ($errors->has('title'))
+@if ($errors->has('borrower'))
     <div>
-        {{ $errors->first('email') }}
+        {{ $errors->first('borrower') }}
     </div>
 @endif
 
 
-@if ($errors->has('author'))
+@if ($errors->has('bookborrowed'))
     <div>
-        {{ $errors->first('author') }}
+        {{ $errors->first('bookborrowed') }}
     </div>
 @endif
 
-@if ($errors->has('description'))
+@if ($errors->has('dateborrowed'))
     <div>
-        {{ $errors->first('description') }}
+        {{ $errors->first('dateborrowed') }}
     </div>
 @endif
 
-@if ($errors->has('isbn'))
+@if ($errors->has('datereturned'))
     <div>
-        {{ $errors->first('isbn') }}
+        {{ $errors->first('datereturned') }}
     </div>
 @endif
 
-@if ($errors->has('copies'))
+@if ($errors->has('borrowstatus'))
     <div>
-        {{ $errors->first('copies') }}
+        {{ $errors->first('borrowstatus') }}
     </div>
 @endif

@@ -14,22 +14,28 @@
         @foreach ($bbh as $bbh)
         <tr>
             <td>{{ $bbh->id }}</td>
-            <td>{{ $userNames[$loop->index]  }}</td>
-            <td>{{  $bookTitles[$loop->index] }}</td>
+            <td>{{ $bbh->user->name }}</td> 
+            <td>{{ $bbh->book->id }}</td>
             <td>{{ $bbh->borrow_date }}</td>
             <td>{{ $bbh->return_date }}</td>
-            <td>{{ $bbh->status }}</td>
+            <td>{{ $bbh->borrow_status }}</td>
 
             <td>
-                {{-- <a href="{{ route('book.details', $book->id) }}" class="btn btn-primary">View</a>
-                <a href="{{ route('book.edit', $book->id) }}" class="btn btn-primary">Edit</a>
-                <form action="{{ route('book.delete', $book->id) }}" method="POST" style="display: inline;">
+                <a href="{{ route('bbh.details', $bbh->id) }}" class="btn btn-primary">View</a>
+                <a href="{{ route('bbh.edit', $bbh->id) }}" class="btn btn-primary">Edit</a>
+                <form action="{{ route('bbh.delete', $bbh->id) }}" method="POST" style="display: inline;">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Delete</button>
-                </form> --}}
+                </form>
             </td>
         </tr>
         @endforeach
     </tbody>
 </table>
+
+
+{{--$bbh is a BorrowHistory record.
+    $bbh->user is the user associated with that record.
+    $bbh->user->name is the name of the user who made the borrowing represented by $bbh. 
+--}}

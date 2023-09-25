@@ -1,25 +1,28 @@
 
-<form action=" {{ route('book.store') }}" method="post">
+<form action=" {{route('bbh.store')}}" method="post">
     @csrf
     <div>
-        <label for="name"> Book Title</label>
-        <input type="text" name="title">
+        <label for=""> Id of borrower</label>
+        <input type="id" name="borrower"  >
     </div>
     <div>
-        <label for="author">Book Author</label>
-        <input type="text" name="author">
+        <label for="">Id of Book Borrowed</label>
+        <input type="id" name="bookborrowed" >
     </div>
     <div>
-        <label for="description">Description</label>
-        <input type="text" name="description">
+        <label for="">Date Borrowed</label>
+        <input type="date" name="dateborrowed"  >
     </div>
     <div>
-        <label for="isbn">ISBN</label>
-        <input type="number" name="isbn">
+        <label for="">Date Returned</label>
+        <input type="date" name="datereturned">
     </div>
     <div>
-        <label for="copies">Number of copies</label>
-        <input type="number" name="copies">
+        <label for="">Borrow Status</label>
+        <select type="status" name="borrowstatus">
+            <option value="borrowed">Borrowed</option>
+            <option value="returned">Returned</option>
+        </select>
     </div>
 
     <div></div>
@@ -28,36 +31,39 @@
 </form>
 
 
-@if ($errors->has('title'))
+@if ($errors->has('borrower'))
     <div>
-        {{ $errors->first('email') }}
+        {{ $errors->first('borrower') }}
     </div>
 @endif
 
 
-@if ($errors->has('author'))
+@if ($errors->has('bookborrowed'))
     <div>
-        {{ $errors->first('author') }}
+        {{ $errors->first('bookborrowed') }}
     </div>
 @endif
 
-@if ($errors->has('description'))
+@if ($errors->has('dateborrowed'))
     <div>
-        {{ $errors->first('description') }}
+        {{ $errors->first('dateborrowed') }}
     </div>
 @endif
 
-@if ($errors->has('isbn'))
+@if ($errors->has('datereturned'))
     <div>
-        {{ $errors->first('isbn') }}
+        {{ $errors->first('datereturned') }}
     </div>
 @endif
 
-@if ($errors->has('copies'))
+@if ($errors->has('borrowstatus'))
     <div>
-        {{ $errors->first('copies') }}
+        {{ $errors->first('borrowstatus') }}
     </div>
 @endif
 
-
-
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif

@@ -5,99 +5,190 @@ namespace App\Http\Controllers\Management;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\BorrowHistory;
+use App\Models\Book;
 
 class BorrowHistoryController extends Controller
 {
     public function index()
     {
-       
+       //
     }
 
+    //Display the Borrow History
     public function borrowhistory()
     {
         $bbh = BorrowHistory::all();
-
-
-        $userNames = [];
-        $bookTitles = [];
-
-        // Loop through each bbh record to retrieve user and book data
-        foreach ($bbh as $borrowHistory) {
-            // Retrieve the associated user's name
-            $userName = $borrowHistory->user->name;
-
-            // Retrieve the associated book's title
-            $bookTitle = $borrowHistory->book->title;
-
-            $userNames[] = $userName;
-            $bookTitles[] = $bookTitle;
-    }
-        return view('Management.BorrowHistoryManagement.bbh', compact('bbh','userNames','bookTitles'));
+        return view('Management.BorrowHistoryManagement.bbh', compact('bbh'));
     }
 
+    //Display the Detail of a single bbh
     public function details(BorrowHistory $id)
     {
-       ;
-        return view('Management.BooksManagement.view-bbh', ['bbh' => $id]);
+        return view('Management.BorrowHistoryManagement.view-bbh', ['bbh' => $id]);
     }
 
+    //Return the view for creation of bbh
     public function create()
     {
-        return view('Management.BooksManagement.createbbh');
+        return view('Management.BorrowHistoryManagement.create-bbh');
     }
 
+    //Return the view for edit of bbh
+    public function edit(BorrowHistory $id)
+    {   
+        return view('Management.BorrowHistoryManagement.edit-bbh', ['bbh' => $id]);
+    }
+
+
+    //!Storing the created bbh
     public function store(Request $request)
     {
-        $credentials = $request->validate([
-            'title' => 'required',
-            'author' => 'required',
-            'description' => 'required',
-            'isbn' => 'required|integer',
-            'copies' => 'required|integer',
-        ]);
+        $request->validate($this->validationRules(), $this->validationMessages()); //Validation
+        // Check if the book is being returned and update 'borrowstatus'
+        $this->setBorrowStatus($request);
+        $book = Book::find($request->input('bookborrowed'));
+        if ($book->copies <= 0) {
+            return redirect()->back()->with('error', 'No available copies of the selected book');
+        }
+        $book->decrement('copies');
 
         BorrowHistory::create([
-            'title' => $credentials['title'],
-            'author' => $credentials['author'],
-            'description' => $credentials['description'],
-            'isbn' => $credentials['isbn'],
-            'copies' => $credentials['copies'],
+            'user_id' => $request->input('borrower'),
+            'book_id' => $request->input('bookborrowed'),
+            'borrow_date' => $request->input('dateborrowed'),
+            'return_date' => $request->input('datereturned'),
+            'borrow_status' => $request->input('borrowstatus'),
         ]);
-
-        session()->flash('success', 'Book created successfully');
-        return redirect('/manage/books');
+        session()->flash('success', 'Borrow history created successfully');
+        return redirect('/manage/bbh');
     }
 
-    public function edit(Book $id)
-    {   
-        return view('Management.BooksManagement.editbook', ['book' => $id]);
-    }
-
-    public function update(Request $request, Book $id)
+      //!Updating the edited bbh
+    public function update(Request $request, BorrowHistory $id)
     {
-        $credentials = $request->validate([
-            'title' => 'required',
-            'author' => 'required',
-            'description' => 'required',
-            'isbn' => 'required|integer',
-            'copies' => 'required|integer',
-        ]);
-
+        $request->validate($this->validationRules(), $this->validationMessages());
+        $oldBorrowStatus = $id->borrow_status;
+        // Check if the book is being returned and update 'borrowstatus'
+        $this->setBorrowStatus($request);
+        $book = Book::find($request->input('bookborrowed'));
+        if ($book->copies <= 0) {
+            return redirect()->back()->with('error', 'No available copies of the selected book');
+        }
         $id->update([
-            'title' => $credentials['title'],
-            'author' => $credentials['author'],
-            'description' => $credentials['description'],
-            'isbn' => $credentials['isbn'],
-            'copies' => $credentials['copies'],
+            'user_id' => $request->input('borrower'),
+            'book_id' => $request->input('bookborrowed'),
+            'borrow_date' => $request->input('dateborrowed'),
+            'return_date' => $request->input('datereturned'),
+            'borrow_status' => $request->input('borrowstatus'),
         ]);
+        // Compare old and new status and adjust book copies accordingly
+        $this->adjustBookCopies($request, $oldBorrowStatus);
 
-        session()->flash('success', 'User updated successfully');
-        return redirect('/manage/books');
+        session()->flash('success', 'bbh updated successfully');
+        return redirect('/manage/bbh');
     }
 
-    public function delete(Book $id)
+    //!Deleting the bbh
+    public function delete(BorrowHistory $id)
     {
         $id->delete();
-        return redirect('/manage/books');
+        return redirect('/manage/bbh');
     }
+
+
+
+    //Validation Rules
+    private function validationRules()
+    {
+    return [
+        'borrower' => 'required|exists:users,id',
+        'bookborrowed' => 'required|exists:books,id',
+        'dateborrowed' => 'required',
+        'datereturned' => 'nullable',
+        'borrowstatus' => 'required',
+    ];
+    }
+
+    private function validationMessages()
+    {
+    return [
+        'borrower.exists' => 'The selected user does not exist',
+        'bookborrowed.exists' => 'The selected book does not exist',
+    ];
+    }
+
+private function adjustBookCopies(Request $request, $oldBorrowStatus)
+{
+    if ($oldBorrowStatus !== $request->input('borrowstatus')) {
+        $book = Book::find($request->input('bookborrowed'));
+        if ($request->input('borrowstatus') === 'Returned') {
+            $book->increment('copies');
+        } else {
+            $book->decrement('copies');
+        }
+    }
+}
+
+private function setBorrowStatus(Request $request)
+{
+    if ($request->input('datereturned') !== null) {
+        $request->merge(['borrowstatus' => 'Returned']);
+    } else {
+        $request->merge(['borrowstatus' => 'Borrowed']);
+    }
+}
+
+
+
+//?FOR USERS
+public function books()
+{
+    $books = Book::all();
+    return view('Management.Books.books', compact('books'));
+}
+
+
+public function borrowBook( Book $id)
+{
+    $book = $id;
+    if (!$book) {
+        return redirect()->back()->with('error', 'The selected book does not exist');
+    }
+
+    if ($book->copies <= 0) {
+        return redirect()->back()->with('error', 'No available copies of the selected book');
+    }
+
+    // Create a new BorrowHistory entry for the user
+    BorrowHistory::create([
+        'user_id' => auth()->user()->id,
+        'book_id' => $book->id,
+        'borrow_date' => now(),
+        'return_date' => null,
+        'borrow_status' => 'Borrowed',
+    ]);
+
+    // Decrement the book copies
+    $book->decrement('copies');
+
+    return redirect()->back()->with('success', 'Book borrowed successfully');
+}
+
+
+public function returnBook(Request $request, BorrowHistory $borrowHistory)
+{
+    // Update the return date to the current date
+    $borrowHistory->update([
+        'return_date' => now(),
+        'borrow_status' => 'Returned',
+    ]);
+
+    // Increment the book copies
+    $book = $borrowHistory->book;
+    $book->increment('copies');
+
+    return redirect()->back()->with('success', 'Book returned successfully');
+}
+
+
 }

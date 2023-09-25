@@ -90,11 +90,11 @@ Route::middleware(['auth', 'CheckRole:admin,superadmin'])->group(function () {
     Route::delete('/delete/bbh/{id}', [BorrowHistoryController::class, 'delete'])->name('bbh.delete');//Delete
 });
 
-
 // Borrowing and Returning Books
 Route::middleware(['auth', 'CheckRole:superadmin,admin,user'])->group(function () {
-    Route::get('/borrow/book/{id}', [BooksController::class, 'borrow'])->name('book.borrow'); // Borrow
-    Route::post('/return/book/{id}', [BooksController::class, 'return'])->name('book.return'); // Return
+    Route::get('/books', [BorrowHistoryController::class, 'books'])->name('books'); //ManageBooksDashboard
+    Route::get('/borrow/book/{id}', [BorrowHistoryController::class, 'borrowBook'])->name('book.borrow'); // Borrow
+    Route::post('/return/book/{id}', [BorrowHistoryController::class, 'returnBook'])->name('book.return'); // Return
 });
 
 

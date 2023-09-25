@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('author');
             $table->string('description');
-            $table->string('ISBN');
+            $table->string('isbn');
             $table->integer('copies'); // Use integer for the number of copies
             $table->timestamps();
         });

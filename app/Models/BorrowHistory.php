@@ -14,16 +14,20 @@ class BorrowHistory extends Model
         'book_id',
         'borrow_date',
         'return_date',
-        'status',
+        'borrow_status',
     ];
 
+
+    // This model establishes a relationship with both the User and Book models.
+    // It automatically identifies the foreign key columns as {modelname}_id,
+    // which, in this case, are user_id and book_id.
     public function user()
     {
-    return $this->belongsTo(User::class, 'user_id');
-    }
+        return $this->belongsTo(User::class); 
+    }           
 
     public function book()
     {
-    return $this->belongsTo(Book::class, 'book_id');
+        return $this->belongsTo(Book::class); 
     }
 }

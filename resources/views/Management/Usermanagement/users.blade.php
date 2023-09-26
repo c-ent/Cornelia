@@ -5,6 +5,7 @@
             <th>Name</th>
             <th>Email</th>
             <th>Role</th>
+            <th>Borrowling limit</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -25,6 +26,7 @@
                         
                 @endswitch
             </td>
+            <td>{{ $user->borrowing_limit }}</td>
 
             <td>
                 <a href="{{ route('user.details', $user->id) }}" class="btn btn-primary">View</a>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Management;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User;
 use App\Models\BorrowHistory;
 use App\Models\Book;
 
@@ -144,7 +145,12 @@ private function setBorrowStatus(Request $request)
 public function books()
 {
     $books = Book::all();
-    return view('Management.Books.books', compact('books'));
+    $borrowedBooks = BorrowHistory::where('user_id', auth()->user()->id)
+    ->where('borrow_status', 'Borrowed')
+    ->get();
+
+    return view('Management.Books.books', compact('books','borrowedBooks'));
+  
 }
 
 
@@ -159,6 +165,17 @@ public function borrowBook( Book $id)
         return redirect()->back()->with('error', 'No available copies of the selected book');
     }
 
+    $total_borrowed = BorrowHistory::where('user_id', auth()->user()->id)
+    ->where('borrow_status', 'Borrowed')
+    ->get();
+
+    $borrowed_limit = auth()->user()->borrowing_limit;
+
+    if ($total_borrowed->count() >= $borrowed_limit) {
+        return redirect()->back()->with('error', 'You have reached the maximum number of books that can be borrowed');
+    }
+
+  
     // Create a new BorrowHistory entry for the user
     BorrowHistory::create([
         'user_id' => auth()->user()->id,
@@ -175,20 +192,21 @@ public function borrowBook( Book $id)
 }
 
 
-public function returnBook(Request $request, BorrowHistory $borrowHistory)
+
+public function returnBook(Request $request, Book $bookId, BorrowHistory $borrowedId)
 {
-    // Update the return date to the current date
-    $borrowHistory->update([
+    $borrowedId->update([
         'return_date' => now(),
         'borrow_status' => 'Returned',
     ]);
 
     // Increment the book copies
-    $book = $borrowHistory->book;
-    $book->increment('copies');
+    $bookId->increment('copies');
 
     return redirect()->back()->with('success', 'Book returned successfully');
 }
+
+
 
 
 }

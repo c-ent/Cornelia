@@ -36,6 +36,12 @@ class UserPolicy
 
         return true;
     }
+    
+
+    public function update(User $currentUser, User $user)
+    {
+        return $currentUser->can('update-user'); // Implement the appropriate check for updating users
+    }
 
 
 }

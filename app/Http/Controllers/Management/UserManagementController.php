@@ -44,17 +44,21 @@ class UserManagementController extends Controller
 
     public function store(Request $request)
     {
+        
         $credentials = $request->validate([
             'name' => 'required',
             'email' => 'required',
             'password' => 'required',
+            'role' => 'required |validRole',
+            'borrowing_limit' => 'required',
         ]);
 
         User::create([
             'name' => $credentials['name'],
             'email' => $credentials['email'],
             'password' => $credentials['password'],
-            'role_id' => 3,
+            'role_id' => $credentials['role'],
+            'borrowing_limit' => $credentials['borrowing_limit'],
         ]);
 
         session()->flash('success', 'User created successfully');
@@ -72,11 +76,15 @@ class UserManagementController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required',
+            'role' => 'required |validRole',
+            'borrowing_limit' => 'required',
         ]);
 
         $id->update([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
+            'role_id' => $request['role'],
+            'borrowing_limit' => $request['borrowing_limit'],
         ]);
 
         session()->flash('success', 'User updated successfully');

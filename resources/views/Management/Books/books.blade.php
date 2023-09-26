@@ -1,3 +1,5 @@
+@extends('layouts.app')
+
 <table class="table">
     <thead>
         <tr>

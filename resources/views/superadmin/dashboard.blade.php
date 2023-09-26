@@ -1,20 +1,2 @@
-<h1>dasborad for superadminnn</h1>
+@extends('layouts.app')
 
-<div class="container">
-  <h1>Super Admin Dashboard</h1>
-<a href="/manage/users">Manage user</a>
-<a href="/manage/books">Manage Books</a>
-<a href="/manage/bbh">Manage Borrowed Books</a>
-<a href="/books">  Books</a>
-  {{-- @include('management.adminmanagement.manageadmins') 
-  @include('management.usermanagement.manageusers')  --}}
-
-</div>
-
-
-@auth
-{{auth()->user()->email}}
-<div class="text-end">
-  <a href="{{ route('logout') }}" class="btn btn-outline-light me-2">Logout</a>
-</div>
-@endauth

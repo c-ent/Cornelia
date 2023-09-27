@@ -1,10 +1,29 @@
 @extends('layouts.app')
-
-
 @section('content')
 
-<a href="{{ route('bbh.create')}}" class="btn btn-primary">ADD</a>
-<table class="table">
+<div class="d-flex flex-row">
+    <h1  class="fs-1 fw-bold ">Borrowing History</h1>
+    <a  href="{{ route('bbh.create')}}" class="addbtn ms-auto"type="submit">
+        <i class="bi bi-plus-circle-fill mx-1"></i>
+        Create New
+    </a>
+</div>
+<div class="w-100 my-4" style="background-color:white;padding:30px;border-radius:20px">
+    <div class="d-flex">
+        <div class="w-50 position-relative">
+            <input class="search" type="text" placeholder="Search" name="search">
+        </div>
+        {{-- <div>
+            Filters
+        </div>
+
+        <div>
+            Sort By
+        </div> --}}
+    </div>
+
+    <h1 class="fs-2 fw-bold my-4">All Borrowing History</h1>
+<table class="table  table-borderless">
     <thead>
         <tr>
             <th>BBH ID</th>
@@ -26,18 +45,24 @@
             <td>{{ $bbh->borrow_status }}</td>
 
             <td>
-                <a href="{{ route('bbh.details', $bbh->id) }}" class="btn btn-primary">View</a>
-                <a href="{{ route('bbh.edit', $bbh->id) }}" class="btn btn-primary">Edit</a>
+                <a href="{{ route('bbh.details', $bbh->id) }}">
+                    <i class="bi bi-eye-fill" style="color:#4E9C84;font-size:30px"></i>
+                </a>
+                
+                <a href="{{ route('bbh.edit', $bbh->id) }}"> 
+                    <i class="bi bi-pencil-fill" style="color:#4E9C84;font-size:30px"></i>
+                </a>
                 <form action="{{ route('bbh.delete', $bbh->id) }}" method="POST" style="display: inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="submit"> <i class="bi bi-trash-fill" style="color:#4E9C84;font-size:30px"></i></button>
                 </form>
             </td>
         </tr>
         @endforeach
     </tbody>
 </table>
+
 
 
 {{--$bbh is a BorrowHistory record.

@@ -1,10 +1,29 @@
 @extends('layouts.app')
-
-
 @section('content')
 
-<a href="{{ route('user.create')}}" class="btn btn-primary">ADD</a>
-<table class="table">
+<div class="d-flex flex-row">
+    <h1  class="fs-1 fw-bold ">User Management</h1>
+    <a  href="{{ route('user.create')}}" class="addbtn ms-auto"type="submit">
+        <i class="bi bi-plus-circle-fill mx-1"></i>
+        Create New
+    </a>
+</div>
+<div class="w-100 my-4" style="background-color:white;padding:30px;border-radius:20px">
+    <div class="d-flex">
+        <div class="w-50 position-relative">
+            <input class="search" type="text" placeholder="Search" name="search">
+        </div>
+        {{-- <div>
+            Filters
+        </div>
+
+        <div>
+            Sort By
+        </div> --}}
+    </div>
+
+    <h1 class="fs-2 fw-bold my-4">All Users</h1>
+<table class="table table-borderless">
     <thead>
         <tr>
             <th>Name</th>
@@ -34,14 +53,21 @@
             <td>{{ $user->borrowing_limit }}</td>
 
             <td>
-                <a href="{{ route('user.details', $user->id) }}" class="btn btn-primary">View</a>
-                <a href="{{ route('user.edit', $user->id) }}" class="btn btn-primary">Edit</a>
+                <a href="{{ route('user.details', $user->id) }}">
+                    <i class="bi bi-eye-fill" style="color:#4E9C84;font-size:30px"></i>
+                </a>
+                
+                <a href="{{ route('user.edit', $user->id)  }}"> 
+                    <i class="bi bi-pencil-fill" style="color:#4E9C84;font-size:30px"></i>
+                </a>
                 <form action="{{ route('user.delete', $user->id) }}" method="POST" style="display: inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="submit"> <i class="bi bi-trash-fill" style="color:#4E9C84;font-size:30px"></i></button>
                 </form>
             </td>
+
+          
         </tr>
         @endforeach
     </tbody>

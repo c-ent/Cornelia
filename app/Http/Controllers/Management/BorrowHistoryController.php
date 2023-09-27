@@ -145,6 +145,7 @@ private function setBorrowStatus(Request $request)
 public function books()
 {
     $books = Book::all();
+    // $books = Book::paginate(10);
     $borrowedBooks = BorrowHistory::where('user_id', auth()->user()->id)
     ->where('borrow_status', 'Borrowed')
     ->get();

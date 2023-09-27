@@ -3,22 +3,116 @@ a {
     color: #9F9F9F;
 }
 
+h1{
+    font-family: Roboto;
+}
+
 li{
     margin-bottom: 20px;
 }
 
-
-
-th {
-    border-radius: 20px !important; /* Adjust the value as needed */
-    overflow: hidden !important;
+table{
+    font-family: Roboto;
+    font-size: 16px;
 }
 
 
+td{
+    vertical-align: middle;
+}
+
+th{
+    color: #717171 !important;
+font-family: Roboto;
+font-size: 16px;
+font-style: normal;
+font-weight: 700;
+}
+
+/* change color of every row, starts at the first row */
+tr:nth-child(odd) td {  
+    background-color: #DCEBD7;
+}
+/* class="{{ $index % 2 == 0 ? 'table-success' : '' }}" */
+
+/* make the first td of the row radius to 20px, the left */
+tr td:first-of-type {
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  
+}
+
+/* make the last td of the row radius to 20px, the right one  */
+tr td:last-of-type {
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+
+.bookid{
+    font-size:20px;
+    font-style: normal;
+    font-weight: 700;
+    color:#404040 !important;
+}
+
+.booktitle{
+    font-style: normal;
+    font-weight: 500;
+   
+}
+
+.bookauthor ,.bookdescr,.bookisbn,.bookcopies,.bookbrwdate{
+    color: #717171 !important;
+font-family: Roboto;
+font-size: 16px;
+font-style: normal;
+font-weight: 500;
+}
+
+button{
+    border-style: none !important;
+    background-color: #40404000;
+}
+.addbtn{
+    display: flex;
+    align-items: center;
+    font-family: Roboto;
+    padding-left: 20px;
+    padding-right: 30px;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 5px;
+    background-color: #4E9C84;
+    height: 50px;
+    color:rgb(255, 255, 255);
+}
+.borrowbtn{
+    padding-left: 15px;
+    padding-right: 15px;
+    border: none;
+    font-weight: semibold;
+    border-radius: 5px;
+    background-color: #4E9C84;
+    height: 40px;
+    color:rgb(255, 255, 255);
+}
+
+.returnbtn{
+    padding-left: 15px;
+    padding-right: 15px;
+    border: none;
+    font-weight: semibold;
+    border-radius: 5px;
+    background-color: #BD5F41;
+    height: 40px;
+    color:rgb(255, 255, 255);
+}
 
 .search {
     width: 100%;
-    height: 40px;
+    height: 50px;
+    font-size: 24px;
     border: 1px solid #9F9F9F;
     border-radius: 12px;
     padding: 9px 4px 9px 40px;

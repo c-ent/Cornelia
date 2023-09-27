@@ -1,8 +1,23 @@
 @extends('layouts.app')
-
-
 @section('content')
-<table class="table">
+
+<h1>Books</h1>
+
+<div class="d-flex w-100 my-4">
+    <div class="w-50 position-relative">
+        <input class="search" type="text" placeholder="Search" name="search">
+    </div>
+    {{-- <div>
+        Filters
+    </div>
+
+    <div>
+        Sort By
+    </div> --}}
+</div>
+
+<h1>Available Books</h1>
+<table class="table ">
     <thead>
         <tr>
             <th>ID</th>
@@ -14,8 +29,8 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($books as $book)
-        <tr>
+        @foreach ($books as $index => $book)
+        <tr class="{{ $index % 2 == 0 ? 'table-success' : '' }}">
             <td>{{ $book->id }}</td>
             <td>{{ $book->title }}</td>
             <td>{{ $book->author }}</td>
@@ -36,6 +51,9 @@
 </table>
 
 
+
+
+<h1>Your Borrowed Books</h1>
 <table class="table">
     <thead>
         <tr>
@@ -48,8 +66,8 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($borrowedBooks as $borrowedBook)
-        <tr>
+        @foreach ($borrowedBooks as $index => $borrowedBook)
+        <tr class="{{ $index % 2 == 0 ? 'table-success' : '' }}">
             <td>{{ $borrowedBook->id }}</td>
             <td>{{ $borrowedBook->user->name }}</td>
             <td>{{ $borrowedBook->book->title }}</td>

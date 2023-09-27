@@ -1,4 +1,7 @@
+@extends('layouts.app')
 
+
+@section('content')
 <form action=" {{route('bbh.store')}}" method="post">
     @csrf
     <div>
@@ -67,3 +70,6 @@
         {{ session('error') }}
     </div>
 @endif
+
+
+@endsection

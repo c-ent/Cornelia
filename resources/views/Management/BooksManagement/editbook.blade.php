@@ -1,4 +1,7 @@
+@extends('layouts.app')
 
+
+@section('content')
 <form action=" {{route('book.update', $book->id)}}" method="post">
     @csrf
     <div>
@@ -58,3 +61,5 @@
         {{ $errors->first('copies') }}
     </div>
 @endif
+
+@endsection

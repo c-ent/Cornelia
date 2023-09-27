@@ -1,4 +1,7 @@
+@extends('layouts.app')
 
+
+@section('content')
 <form action=" {{ route('book.store') }}" method="post">
     @csrf
     <div>
@@ -60,4 +63,4 @@
 @endif
 
 
-
+@endsection

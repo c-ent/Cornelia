@@ -1,4 +1,7 @@
+@extends('layouts.app')
 
+
+@section('content')
 <form action=" {{route('bbh.update', $bbh->id)}}" method="post">
     @csrf
     <div>
@@ -62,3 +65,5 @@
         {{ $errors->first('borrowstatus') }}
     </div>
 @endif
+
+@endsection

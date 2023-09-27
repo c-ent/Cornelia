@@ -1,3 +1,8 @@
+@extends('layouts.app')
+
+
+@section('content')
+
 <a href="{{ route('bbh.create')}}" class="btn btn-primary">ADD</a>
 <table class="table">
     <thead>
@@ -39,3 +44,5 @@
     $bbh->user is the user associated with that record.
     $bbh->user->name is the name of the user who made the borrowing represented by $bbh. 
 --}}
+
+@endsection

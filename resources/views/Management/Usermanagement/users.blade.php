@@ -1,3 +1,8 @@
+@extends('layouts.app')
+
+
+@section('content')
+
 <a href="{{ route('user.create')}}" class="btn btn-primary">ADD</a>
 <table class="table">
     <thead>
@@ -41,3 +46,5 @@
         @endforeach
     </tbody>
 </table>
+
+@endsection

@@ -22,6 +22,25 @@ class BorrowHistoryController extends Controller
         return view('Management.BorrowHistoryManagement.bbh', compact('bbh'));
     }
 
+    //Display the Borrow History
+    public function allreturnedBooks()
+    {
+        $bbh = BorrowHistory::where(function($query) {
+            $query->where('borrow_status', 'Returned')
+                    ->orWhereNotNull('return_date');
+        })->get();
+        return view('Management.BorrowHistoryManagement.bbh-returned', compact('bbh'));
+    }
+
+    public function allborrowedBooks()
+    {
+        $bbh = BorrowHistory::where(function($query) {
+            $query->where('borrow_status', 'Borrowed')
+                    ->orWhereNull('return_date');
+        })->get();
+        return view('Management.BorrowHistoryManagement.bbh-borrowed', compact('bbh'));
+    }
+
     //Display the Detail of a single bbh
     public function details(BorrowHistory $id)
     {
@@ -93,7 +112,7 @@ class BorrowHistoryController extends Controller
     public function delete(BorrowHistory $id)
     {
         $id->delete();
-        return redirect('/manage/bbh');
+        return redirect()->back();
     }
 
 

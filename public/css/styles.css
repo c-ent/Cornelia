@@ -29,6 +29,20 @@ font-style: normal;
 font-weight: 700;
 }
 
+.active{
+        color: #A7BA1E; /* Change the color for active links */
+        font-weight: bold; /* Make the text bold for active links */
+        background-color: #2D3D3F;
+        border-radius: 20px;
+        /* Add any other styles you want for active links */
+
+}
+
+
+.nav-link:hover {
+    color: #A7BA1E; /* Inherit the default text color */
+}
+
 /* change color of every row, starts at the first row */
 tr:nth-child(odd) td {  
     background-color: #DCEBD7;

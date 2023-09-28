@@ -2,7 +2,7 @@
 @section('content')
 
 <div class="d-flex flex-row">
-    <h1  class="fs-1 fw-bold ">Returned Books</h1>
+    <h1  class="fs-1 fw-bold ">Borrowed Books</h1>
 </div>
 <div class="w-100 my-4" style="background-color:white;padding:30px;border-radius:20px">
     <div class="d-flex">

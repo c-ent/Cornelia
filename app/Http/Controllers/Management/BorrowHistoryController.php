@@ -165,11 +165,15 @@ public function books()
 {
     $books = Book::all();
     // $books = Book::paginate(10);
-    $borrowedBooks = BorrowHistory::where('user_id', auth()->user()->id)
-    ->where('borrow_status', 'Borrowed')
-    ->get();
 
-    return view('Management.Books.books', compact('books','borrowedBooks'));
+    return view('Management.Books.books', compact('books'));
+  
+}
+
+public function viewBook(Request $request, Book $id)
+{
+    $book = $id;
+    return view('Management.Books.book-details', compact('book','book'));
   
 }
 
@@ -230,13 +234,17 @@ public function userbbh(Request $request, Book $bookId, BorrowHistory $borrowedI
 {
     $userId = auth()->user()->id;
 
-    $borrowedBooks = BorrowHistory::where('user_id', $userId)
+    $returnedBooks = BorrowHistory::where('user_id', $userId)
         ->where('borrow_status', 'Returned')
+        ->get();
+
+        $borrowedBooks = BorrowHistory::where('user_id', auth()->user()->id)
+        ->where('borrow_status', 'Borrowed')
         ->get();
 
     // Increment the book copies
 
-    return view('Management.Books.borrowinghistory', compact('borrowedBooks'));
+    return view('Management.Books.borrowinghistory', compact('returnedBooks', 'borrowedBooks'));
 }
 
 

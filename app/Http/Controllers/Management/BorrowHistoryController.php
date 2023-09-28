@@ -207,6 +207,19 @@ public function returnBook(Request $request, Book $bookId, BorrowHistory $borrow
     return redirect()->back()->with('success', 'Book returned successfully');
 }
 
+public function userbbh(Request $request, Book $bookId, BorrowHistory $borrowedId)
+{
+    $userId = auth()->user()->id;
+
+    $borrowedBooks = BorrowHistory::where('user_id', $userId)
+        ->where('borrow_status', 'Returned')
+        ->get();
+
+    // Increment the book copies
+
+    return view('Management.Books.borrowinghistory', compact('borrowedBooks'));
+}
+
 
 
 

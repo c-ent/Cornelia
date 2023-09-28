@@ -16,17 +16,13 @@
 <body> 
         <div class="d-flex">
             <!-- Sidebar -->
-            <div class="position-fixed" style="color: #9F9F9F;background-color: #202B2C; width: 250px; height: 100vh">
+            <div class="position-fixed" style="color: #9F9F9F;background-color: #202B2C; width: 260px; height: 100vh">
                 <div class="text-light">
                     <h2 class="mx-4" style="margin-top:30px;margin-bottom:30px">Cornelia</h2>
                 </div>
-                @if(auth()->user()->role_id === 1)
-                @include('superadmin.superadmin_sidebar')
-                @elseif(auth()->user()->role_id === 2)
-                    @include('admin.admin_sidebar')
-                @else
-                    @include('user.user_sidebar')
-                @endif
+                
+                @include('layouts.sidebar')
+            
             </div>
     
             <!-- Main Panel -->

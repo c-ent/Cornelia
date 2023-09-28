@@ -95,8 +95,6 @@
             <td class="bookbrwdate">{{ $borrowedBook->borrow_date }}</td>
            
 
-            
-
             <td>
                 <form method="POST" action="{{ route('book.return', ['bookId' => $borrowedBook->book->id, 'borrowedId' => $borrowedBook->id]);}}">
                     @csrf

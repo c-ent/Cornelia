@@ -200,7 +200,7 @@ public function borrowBook( Book $id)
         return redirect()->back()->with('error', 'You have reached the maximum number of books that can be borrowed');
     }
     
-   
+ 
     // Create a new BorrowHistory entry for the user
     BorrowHistory::create([
         'user_id' => auth()->user()->id,

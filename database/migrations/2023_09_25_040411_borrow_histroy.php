@@ -18,7 +18,6 @@ return new class extends Migration
             $table->timestamp('borrow_date')->useCurrent(); // Date when the book was borrowed
             $table->date('return_date')->nullable(); // Date when the book was returned
             $table->string('borrow_status'); // Status of the borrowing event
-            $table->int('borrowing_limit')->default(10);
             // Define foreign key constraints
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('book_id')->references('id')->on('books');

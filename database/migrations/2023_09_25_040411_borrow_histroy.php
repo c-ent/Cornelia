@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('borrow_histories', function (Blueprint $table) {
             $table->id(); // Primary Key
-            $table->unsignedBigInteger('borrower_id'); // Foreign Key referencing Users Table
-            $table->unsignedBigInteger('borrowed_book_id'); // Foreign Key referencing Books Table
+            $table->unsignedBigInteger('user_id'); // Foreign Key referencing Users Table
+            $table->unsignedBigInteger('book_id'); // Foreign Key referencing Books Table
             $table->timestamp('borrow_date')->useCurrent(); // Date when the book was borrowed
             $table->date('return_date')->nullable(); // Date when the book was returned
             $table->string('borrow_status'); // Status of the borrowing event
-
+            $table->int('borrowing_limit')->default(10);
             // Define foreign key constraints
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('book_id')->references('id')->on('books');

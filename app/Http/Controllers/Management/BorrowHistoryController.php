@@ -71,7 +71,7 @@ class BorrowHistoryController extends Controller
             return redirect()->back()->with('error', 'No available copies of the selected book');
         }
         $book->decrement('copies');
-
+        
         BorrowHistory::create([
             'user_id' => $request->input('borrower'),
             'book_id' => $request->input('bookborrowed'),
@@ -185,6 +185,7 @@ public function borrowBook( Book $id)
         return redirect()->back()->with('error', 'The selected book does not exist');
     }
 
+    
     if ($book->copies <= 0) {
         return redirect()->back()->with('error', 'No available copies of the selected book');
     }
@@ -198,16 +199,17 @@ public function borrowBook( Book $id)
     if ($total_borrowed->count() >= $borrowed_limit) {
         return redirect()->back()->with('error', 'You have reached the maximum number of books that can be borrowed');
     }
-
-  
+    
+   
     // Create a new BorrowHistory entry for the user
     BorrowHistory::create([
         'user_id' => auth()->user()->id,
         'book_id' => $book->id,
         'borrow_date' => now(),
         'return_date' => null,
-        'borrow_status' => 'Borrowed',
+        'borrow_status' => "Borrowed",
     ]);
+    
 
     // Decrement the book copies
     $book->decrement('copies');
@@ -241,6 +243,7 @@ public function userbbh(Request $request, Book $bookId, BorrowHistory $borrowedI
         $borrowedBooks = BorrowHistory::where('user_id', auth()->user()->id)
         ->where('borrow_status', 'Borrowed')
         ->get();
+
 
     // Increment the book copies
 

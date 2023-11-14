@@ -83,7 +83,7 @@ Route::middleware(['auth', 'CheckRole:admin,superadmin'])->group(function () {
 //MANAGE Books BorrowHistory
 Route::middleware(['auth', 'CheckRole:admin,superadmin'])->group(function () {
     Route::get('/manage/bbh', [BorrowHistoryController::class, 'borrowhistory'])->name('bbh.manage'); //ManageBooksDashboard
-    Route::get('/book/{id}', [BorrowHistoryController::class, 'viewBook'])->name('book.view'); //View
+    // Route::get('/book/{id}', [BorrowHistoryController::class, 'viewBook'])->name('book.view'); //View
     Route::get('/manage/borrowed', [BorrowHistoryController::class, 'allborrowedBooks'])->name('bbh.borrowed');
     Route::get('/manage/returned', [BorrowHistoryController::class, 'allreturnedBooks'])->name('bbh.returned');
 
@@ -98,6 +98,7 @@ Route::middleware(['auth', 'CheckRole:admin,superadmin'])->group(function () {
 // Borrowing and Returning Books
 Route::middleware(['auth', 'CheckRole:superadmin,admin,user'])->group(function () {
     Route::get('/books', [BorrowHistoryController::class, 'books'])->name('books'); //ManageBooksDashboard
+    Route::get('/book/{id}', [BorrowHistoryController::class, 'viewBook'])->name('book.view'); //View
     Route::get('/books/borrowhistory', [BorrowHistoryController::class, 'userbbh'])->name('borrow.history'); //ManageBooksDashboard
     Route::post('/borrow/book/{id}', [BorrowHistoryController::class, 'borrowBook'])->name('book.borrow'); // Borrow
     Route::post('/books/{bookId}/return/{borrowedId}', [BorrowHistoryController::class, 'returnBook'])->name('book.return'); // Return

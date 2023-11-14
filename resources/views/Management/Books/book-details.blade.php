@@ -17,7 +17,7 @@
                 @csrf
                 <!-- Add form inputs or buttons here -->
                 <button class="borrow-btn" type="submit">Borrow</button>
-            </form> 
+    </form> 
 </div>
 
 @endsection
